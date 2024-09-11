@@ -162,3 +162,5 @@ cython_debug/
 #.idea/
 walk.csv
 walk.mp4
+
+./.venv

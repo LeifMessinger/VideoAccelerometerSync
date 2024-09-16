@@ -34,7 +34,6 @@ def video_to_signal(signal_from_frames=stdev_signal, **kwargs):
     capture = None
 
     #Handle kwargs
-    print(kwargs)
     for key, value in kwargs.items():
         match key:
             case 'capture':
@@ -42,26 +41,29 @@ def video_to_signal(signal_from_frames=stdev_signal, **kwargs):
             case 'path':
                 capture = cv2.VideoCapture(value)
 
-    print(capture)
-
     if not capture.isOpened():
-        print("Error: Could not open video.")
-        return
+        import sys
+        sys.exit("Error: Could not open video.")
 
     # Read the first frame
     ret, prev_frame = capture.read()
 
     frame_diffs = []
 
-    while True:
-        ret, frame = capture.read()
-        if not ret:
-            break
+    from tqdm import tqdm
+    total_frames = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
 
-        frame_diffs.append(signal_from_frames(frame, prev_frame))
+    with tqdm(total=total_frames) as progress_bar:
+        while True:
+            ret, frame = capture.read()
+            if not ret:
+                break
 
-        # Update the previous frame
-        prev_frame = frame
+            frame_diffs.append(signal_from_frames(frame, prev_frame))
+
+            # Update the previous frame
+            prev_frame = frame
+            progress_bar.update(1)
 
     capture.release()
 

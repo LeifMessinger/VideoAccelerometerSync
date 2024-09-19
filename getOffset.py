@@ -13,10 +13,10 @@ video_filename = sys.argv[1]
 
 #Allow some spoonerism
 if ".csv" in sys.argv[1]:
-	accelerometer_file_path = sys.argv[1]
+	accelerometer_filename = sys.argv[1]
 
 if ".mp4" in sys.argv[2]:
-	video_file_path = sys.argv[2]
+	video_filename = sys.argv[2]
 
 import pandas as pd
 import numpy as np
@@ -25,8 +25,11 @@ import scipy
 import VidAccSyn
 
 #Arlene wrote this part. Modified to use as a function
+accelerometer_sample_rate = 10 #ms
 def process_sensor_data(filename, fieldnames):
 	df_raw = pd.read_csv(filename)
+
+	accelerometer_sample_rate = VidAccSyn.polling_rate(df_raw)
 
 	#expand the fieldnames from the input
 	x_field, y_field, z_field = fieldnames
@@ -41,18 +44,18 @@ def process_sensor_data(filename, fieldnames):
 	return mag_changes_res
 
 FIELD_NAMES =  'Linear Acceleration x (m/s^2)', 'Linear Acceleration y (m/s^2)', 'Linear Acceleration z (m/s^2)'
-processed_sensor_data = process_sensor_data("walk.csv", FIELD_NAMES)
+processed_sensor_data = process_sensor_data(accelerometer_filename, FIELD_NAMES)
 
 frame_diff = VidAccSyn.stdev_video_to_velocity(path=video_filename)
 frame_diff = VidAccSyn.velocity_to_acceleration(frame_diff)
 
 # Resampling
-#resample both signals using the scipy.signal.resample function
-#use the longer signal (sensor) as the length
+#Video is going to have way less samples than acceleration
 max_len = max(len(processed_sensor_data), len(frame_diff))
 resample_size = max_len
-signal_rs = scipy.signal.resample(processed_sensor_data, resample_size)
+signal_rs = scipy.signal.resample(processed_sensor_data, len(processed_sensor_data))
 video_rs = scipy.signal.resample(frame_diff, resample_size)
+video_rs = np.abs(video_rs)
 
 cc = scipy.signal.correlate(signal_rs, video_rs, mode='full')
 
@@ -60,6 +63,6 @@ list_cc = list(cc)
 #print(max(list_cc))
 #print(list_cc.index(max(list_cc)))
 max_pos = list_cc.index(max(list_cc))
-lag = max_pos - resample_size
+lag = max_pos - len(processed_sensor_data)
 #print(f'lag at the max correlation is: {lag} (ms)')
-print(lag)
+print(lag * accelerometer_sample_rate)

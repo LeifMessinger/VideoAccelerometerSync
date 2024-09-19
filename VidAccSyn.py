@@ -76,3 +76,15 @@ def velocity_to_acceleration(velocity_array):
 
     #Just abs value it.
     return np.abs(np.gradient(velocity_array))
+
+#accelerometer_data is the pandas dataframe of the accelerometer csv. It should have Time (s) as the first column
+#returns miliseconds
+def polling_rate(accelerometer_data):
+    return np.average(np.diff(accelerometer_data["Time (s)"].values)) * 1000
+
+def resample(arr, newSize):
+    return np.interp(
+        np.linspace(0, len(arr) - 1, newSize),
+        np.arange(len(arr)),
+        arr
+    )

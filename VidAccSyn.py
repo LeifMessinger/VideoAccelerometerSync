@@ -88,3 +88,28 @@ def resample(arr, newSize):
         np.arange(len(arr)),
         arr
     )
+
+def downsample(sensor_data, video_data, sensor_rate, video_rate):
+
+    # Finding downsampling rate by setting higher frequency to the lower frequency
+    max_rate = max(sensor_rate, video_rate)
+    min_rate = min(sensor_rate, video_rate)
+    downsampling = max_rate / min_rate
+
+    # Resampling higher frequency
+    if sensor_rate > video_rate:
+        signal_rs = np.interp(np.arange(0, len(sensor_data), downsampling), np.arange(len(sensor_data)), sensor_data)
+        video_rs = video_data
+    elif sensor_rate < video_rate:
+        signal_rs = sensor_data
+        video_rs = np.interp(np.arange(0, len(video_data), downsampling), np.arange(len(video_data)), video_data)
+
+    # Padding to ensure same amount of data points (necessary for cross-correlation)
+    if len(video_rs) > len(signal_rs): 
+        signal_rs_new = np.pad(signal_rs, (0, len(video_rs) - len(signal_rs)))
+        video_rs_new = video_rs
+    elif len(video_rs) < len(signal_rs):
+        video_rs_new = np.pad(video_rs, (0, len(signal_rs) - len(video_rs)))
+        signal_rs_new = signal_rs
+
+    return signal_rs_new, video_rs_new

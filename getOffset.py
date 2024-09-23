@@ -23,6 +23,7 @@ import numpy as np
 import cv2
 import scipy
 import VidAccSyn
+from math import ceil
 
 #Arlene wrote this part. Modified to use as a function
 accelerometer_sample_rate = 10 #ms
@@ -51,18 +52,17 @@ frame_diff = VidAccSyn.velocity_to_acceleration(frame_diff)
 
 # Resampling
 #Video is going to have way less samples than acceleration
-max_len = max(len(processed_sensor_data), len(frame_diff))
-resample_size = max_len
-signal_rs = scipy.signal.resample(processed_sensor_data, len(processed_sensor_data))
-video_rs = scipy.signal.resample(frame_diff, resample_size)
-video_rs = np.abs(video_rs)
+video_rate = 30
+sensor_rate = 100
+signal_rs, video_rs = VidAccSyn.downsample(processed_sensor_data, frame_diff, sensor_rate, video_rate)
 
 cc = scipy.signal.correlate(signal_rs, video_rs, mode='full')
 
 list_cc = list(cc)
-#print(max(list_cc))
-#print(list_cc.index(max(list_cc)))
 max_pos = list_cc.index(max(list_cc))
-lag = max_pos - len(processed_sensor_data)
-#print(f'lag at the max correlation is: {lag} (ms)')
-print(lag * accelerometer_sample_rate)
+lag_in_sec = (max_pos - len(signal_rs)) / video_rate
+
+if lag_in_sec < 0:
+    print(f'The sensor started ~{abs(lag_in_sec):.3} seconds after the video.')
+elif lag_in_sec > 0:
+    print(f'The video started ~{abs(lag_in_sec):.3} seconds after the sensor.')

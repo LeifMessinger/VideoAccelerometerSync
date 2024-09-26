@@ -17,6 +17,7 @@ Visual studio code might give you a popup to install things like python and jupy
    - If it doesn't, you'll have to do `pip install -r requirements.txt` in the terminal to install all of the required packages later.
 7. Ctrl Shift P, search for and click `Notebook: Select Notebook Kernel`
 8. Click the option with '.venv'
+   - If it doesn't show, try restarting visual studio code.
 
 ## Running
 

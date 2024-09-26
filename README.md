@@ -5,7 +5,7 @@ Cross correlation between video and an accelerometer
 
 ## Installation
 
-1. Download visual studio code, if you haven't already. Visual studio code might
+1. Download visual studio code, if you haven't already.
 2. Clone this repository.
 3. Open `PrototypeCode.ipynb` in visual studio code.
 

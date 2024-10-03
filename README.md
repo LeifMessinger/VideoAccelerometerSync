@@ -9,7 +9,7 @@ Cross correlation between video and an accelerometer
 2. Clone this repository.
 3. Open `PrototypeCode.ipynb` in visual studio code.
 
-Visual studio code might give you a popup to install things like python and jupyter. Click yes to all of those when they show up.
+   Visual studio code might give you a popup to install things like python and jupyter. Click yes to all of those when they show up.
 
 4. Do Ctrl Shift P, search for and click `Python: Create Environment`
 5. Click '.venv' (This step is pretty important, as conda gives worse results somehow)
@@ -21,7 +21,10 @@ Visual studio code might give you a popup to install things like python and jupy
 
 ## Running
 
-1. Move the video data and CSV data into the folder with the `PrototypeCode.ipynb`.
-2. Replace `video_filename`and `sensor_filename` with the paths to the video file and `.csv` file respectively.
-3. Click `▶️Run All` at the top of the notebook.
-4. Scroll down to view the results.
+1. Move the video data and CSV data into the folder with the `PrototypeCode.ipynb`
+
+   Please ensure that the VidAccSyn.py file is in this folder as well.
+
+4. Replace `video_filename`and `sensor_filename` with the paths to the video file and `.csv` file respectively.
+5. Click `▶️Run All` at the top of the notebook.
+6. Scroll down to view the results.

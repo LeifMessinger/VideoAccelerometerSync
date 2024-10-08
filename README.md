@@ -1,7 +1,13 @@
 # VideoAccelerometerSync
-Cross correlation between video and an accelerometer
+Finding cross-correlation lag in seconds between video and an accelerometer for alignment.
 
-90% of the code was done by someone named Usha.
+Most of the code was originally done by someone named Usha.
+
+AI in Healthcare and Wearables Contributors:
+- Isaac Gregory
+- Leif Messinger
+- Parth Bhanderi
+- Shiny Shamma Kota
 
 ## Installation
 

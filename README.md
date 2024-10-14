@@ -65,3 +65,6 @@ Cross-correlation is simple in this program in that it is just a function call f
 ### Considering Log
 
 Taking the log of the both signal values further helps the alignment of the signals due to scaling them down similarly. However, this at the potential cost of "leveling" the cross-correlation. In other words, other values in the cross-correlation graph that originally were further from the maximum point may draw closer. It is unclear at the time of this project being finished as to whether the log scaling was more beneficial overall. 
+
+## Dataset
+For testing the system we utilized our phones for accelerometer data and computers or phones to record video. These were then stored on a shared Google Drive folder. Unfortunately exact measurements of the lag between the video and accelerometer were not able to be recorded, but often they can be aligned manually in order to compensate. If access to this dataset is desired, please contact the "AI in Healthcare and Wearables Contributors" mentioned above. 

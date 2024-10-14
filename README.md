@@ -64,4 +64,4 @@ Cross-correlation is simple in this program in that it is just a function call f
 
 ### Considering Log
 
-Taking the log of the both signal values further helps the alignment of the signals due to scaling them down similarly. 
+Taking the log of the both signal values further helps the alignment of the signals due to scaling them down similarly. However, this at the potential cost of "leveling" the cross-correlation. In other words, other values in the cross-correlation graph that originally were further from the maximum point may draw closer. It is unclear at the time of this project being finished as to whether the log scaling was more beneficial overall. 
